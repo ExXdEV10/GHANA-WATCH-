@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -30,6 +31,7 @@ import {
   Info,
   CheckCircle,
 } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 
 interface HeaderProps {
   title?: string;
@@ -47,6 +49,13 @@ const Header = ({
   notificationCount = 3,
 }: HeaderProps) => {
   const [notificationModalOpen, setNotificationModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
+
+  // Use user data from auth context if available
+  const displayName = user?.name || userName;
+  const displayRole = user?.role || userRole;
+  const displayAvatar = user?.avatar || userAvatar;
 
   // Sample notifications data
   const notifications = [
@@ -205,9 +214,9 @@ const Header = ({
               onClick={() => console.log("User profile clicked")}
             >
               <Avatar>
-                <AvatarImage src={userAvatar} alt={userName} />
+                <AvatarImage src={displayAvatar} alt={displayName} />
                 <AvatarFallback>
-                  {userName
+                  {displayName
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
@@ -218,16 +227,16 @@ const Header = ({
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium">{userName}</p>
-                <p className="text-xs text-muted-foreground">{userRole}</p>
+                <p className="text-sm font-medium">{displayName}</p>
+                <p className="text-xs text-muted-foreground">{displayRole}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => console.log("Profile clicked")}>
+            <DropdownMenuItem onClick={() => navigate("/profile")}>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => console.log("Settings clicked")}>
+            <DropdownMenuItem onClick={() => navigate("/settings")}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </DropdownMenuItem>
@@ -236,7 +245,12 @@ const Header = ({
               <span>Help</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => console.log("Logout clicked")}>
+            <DropdownMenuItem
+              onClick={() => {
+                logout();
+                navigate("/login");
+              }}
+            >
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

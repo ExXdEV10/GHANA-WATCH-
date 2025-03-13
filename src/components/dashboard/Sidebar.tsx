@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "../../lib/utils";
+import { useAuth } from "@/lib/auth";
 import {
   BarChart,
   Map,
@@ -35,6 +36,13 @@ const Sidebar = ({
 }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
+
+  // Use user data from auth context if available
+  const displayName = user?.name || userName;
+  const displayRole = user?.role || userRole;
+  const displayAvatar = user?.avatar || userAvatar;
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -126,9 +134,9 @@ const Sidebar = ({
           )}
         >
           <Avatar>
-            <AvatarImage src={userAvatar} alt={userName} />
+            <AvatarImage src={displayAvatar} alt={displayName} />
             <AvatarFallback>
-              {userName
+              {displayName
                 .split(" ")
                 .map((n) => n[0])
                 .join("")}
@@ -136,9 +144,9 @@ const Sidebar = ({
           </Avatar>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{userName}</p>
+              <p className="text-sm font-medium truncate">{displayName}</p>
               <p className="text-xs text-primary-foreground/70 truncate">
-                {userRole}
+                {displayRole}
               </p>
             </div>
           )}
@@ -150,7 +158,7 @@ const Sidebar = ({
               variant="secondary"
               size="sm"
               className="flex-1"
-              onClick={() => console.log("Settings clicked")}
+              onClick={() => navigate("/settings")}
             >
               <Settings className="h-4 w-4 mr-1" />
               Settings
@@ -159,7 +167,10 @@ const Sidebar = ({
               variant="secondary"
               size="sm"
               className="flex-1"
-              onClick={() => console.log("Logout clicked")}
+              onClick={() => {
+                logout();
+                navigate("/login");
+              }}
             >
               <LogOut className="h-4 w-4 mr-1" />
               Logout

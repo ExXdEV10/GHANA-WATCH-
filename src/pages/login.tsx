@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/lib/auth";
 import LoginForm from "../components/auth/LoginForm";
 import RegisterForm from "../components/auth/RegisterForm";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -12,8 +13,16 @@ const LoginPage: React.FC<LoginPageProps> = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
+  const { login, isAuthenticated } = useAuth();
 
-  const handleLogin = (values: any) => {
+  useEffect(() => {
+    // If user is already authenticated, redirect to dashboard
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
+  const handleLogin = async (values: any) => {
     // Reset error state
     setError(null);
     setIsLoading(true);
@@ -21,17 +30,18 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     // In a real application, this would authenticate with a backend
     console.log("Login values:", values);
 
-    // Simulate successful login and redirect to dashboard
-    // For demo purposes, we'll simulate a successful login for specific credentials
-    // and an error for others
-    setTimeout(() => {
-      if (values.username === "admin" && values.password === "password123") {
+    try {
+      const success = await login(values.username, values.password);
+      if (success) {
         navigate("/");
       } else {
         setError("Invalid credentials. Please try again.");
         setIsLoading(false);
       }
-    }, 1000);
+    } catch (err) {
+      setError("An error occurred during login. Please try again.");
+      setIsLoading(false);
+    }
   };
 
   const handleRegister = (values: any) => {
