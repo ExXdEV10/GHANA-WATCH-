@@ -8,24 +8,89 @@ import AnalyticsPage from "./pages/analytics";
 import WhistleblowerPage from "./pages/whistleblower";
 import LoginPage from "./pages/login";
 import IncidentSubmissionPage from "./pages/incident-submission";
+import ProfilePage from "./pages/profile";
+import SettingsPage from "./pages/settings";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/incident-map" element={<IncidentMap />} />
-          <Route path="/case-management" element={<CaseManagement />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/whistleblower" element={<WhistleblowerPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/incident-map"
+            element={
+              <ProtectedRoute>
+                <IncidentMap />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/case-management"
+            element={
+              <ProtectedRoute>
+                <CaseManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <AnalyticsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/whistleblower"
+            element={
+              <ProtectedRoute>
+                <WhistleblowerPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/incident-submission"
-            element={<IncidentSubmissionPage />}
+            element={
+              <ProtectedRoute>
+                <IncidentSubmissionPage />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
           {/* Add a catch-all route that redirects to home */}
-          <Route path="*" element={<Home />} />
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       </>

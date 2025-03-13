@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Search, Filter, X, MapPin } from "lucide-react";
+import {
+  Search,
+  Filter,
+  X,
+  MapPin,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -215,7 +222,10 @@ const CaseFilters: React.FC<CaseFiltersProps> = ({
                 <Calendar className="mr-2 h-4 w-4" />
                 {filters.dateRange?.from ? (
                   filters.dateRange.to ? (
-                    <>Date Range</>
+                    <>
+                      {format(filters.dateRange.from, "MMM dd, yyyy")} -{" "}
+                      {format(filters.dateRange.to, "MMM dd, yyyy")}
+                    </>
                   ) : (
                     format(filters.dateRange.from, "MMM dd, yyyy")
                   )
@@ -225,6 +235,163 @@ const CaseFilters: React.FC<CaseFiltersProps> = ({
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
+              <div className="p-3 border-b">
+                <div className="flex justify-between items-center mb-2">
+                  <Select
+                    value={
+                      filters.dateRange?.from
+                        ? format(filters.dateRange.from, "yyyy")
+                        : new Date().getFullYear().toString()
+                    }
+                    onValueChange={(year) => {
+                      const fromDate = filters.dateRange?.from
+                        ? new Date(filters.dateRange.from)
+                        : new Date();
+                      fromDate.setFullYear(parseInt(year));
+                      const toDate = filters.dateRange?.to
+                        ? new Date(filters.dateRange.to)
+                        : undefined;
+                      handleFilterChange("dateRange", {
+                        from: fromDate,
+                        to: toDate,
+                      });
+                    }}
+                  >
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from(
+                        { length: 10 },
+                        (_, i) => new Date().getFullYear() - i,
+                      ).map((year) => (
+                        <SelectItem key={year} value={year.toString()}>
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select
+                    value={
+                      filters.dateRange?.to
+                        ? format(filters.dateRange.to, "yyyy")
+                        : new Date().getFullYear().toString()
+                    }
+                    onValueChange={(year) => {
+                      const toDate = filters.dateRange?.to
+                        ? new Date(filters.dateRange.to)
+                        : new Date();
+                      toDate.setFullYear(parseInt(year));
+                      const fromDate = filters.dateRange?.from
+                        ? new Date(filters.dateRange.from)
+                        : undefined;
+                      handleFilterChange("dateRange", {
+                        from: fromDate,
+                        to: toDate,
+                      });
+                    }}
+                  >
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from(
+                        { length: 10 },
+                        (_, i) => new Date().getFullYear() - i,
+                      ).map((year) => (
+                        <SelectItem key={year} value={year.toString()}>
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <Select
+                    value={
+                      filters.dateRange?.from
+                        ? format(filters.dateRange.from, "MM")
+                        : (new Date().getMonth() + 1)
+                            .toString()
+                            .padStart(2, "0")
+                    }
+                    onValueChange={(month) => {
+                      const fromDate = filters.dateRange?.from
+                        ? new Date(filters.dateRange.from)
+                        : new Date();
+                      fromDate.setMonth(parseInt(month) - 1);
+                      const toDate = filters.dateRange?.to
+                        ? new Date(filters.dateRange.to)
+                        : undefined;
+                      handleFilterChange("dateRange", {
+                        from: fromDate,
+                        to: toDate,
+                      });
+                    }}
+                  >
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="01">January</SelectItem>
+                      <SelectItem value="02">February</SelectItem>
+                      <SelectItem value="03">March</SelectItem>
+                      <SelectItem value="04">April</SelectItem>
+                      <SelectItem value="05">May</SelectItem>
+                      <SelectItem value="06">June</SelectItem>
+                      <SelectItem value="07">July</SelectItem>
+                      <SelectItem value="08">August</SelectItem>
+                      <SelectItem value="09">September</SelectItem>
+                      <SelectItem value="10">October</SelectItem>
+                      <SelectItem value="11">November</SelectItem>
+                      <SelectItem value="12">December</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select
+                    value={
+                      filters.dateRange?.to
+                        ? format(filters.dateRange.to, "MM")
+                        : (new Date().getMonth() + 1)
+                            .toString()
+                            .padStart(2, "0")
+                    }
+                    onValueChange={(month) => {
+                      const toDate = filters.dateRange?.to
+                        ? new Date(filters.dateRange.to)
+                        : new Date();
+                      toDate.setMonth(parseInt(month) - 1);
+                      const fromDate = filters.dateRange?.from
+                        ? new Date(filters.dateRange.from)
+                        : undefined;
+                      handleFilterChange("dateRange", {
+                        from: fromDate,
+                        to: toDate,
+                      });
+                    }}
+                  >
+                    <SelectTrigger className="w-[100px]">
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="01">January</SelectItem>
+                      <SelectItem value="02">February</SelectItem>
+                      <SelectItem value="03">March</SelectItem>
+                      <SelectItem value="04">April</SelectItem>
+                      <SelectItem value="05">May</SelectItem>
+                      <SelectItem value="06">June</SelectItem>
+                      <SelectItem value="07">July</SelectItem>
+                      <SelectItem value="08">August</SelectItem>
+                      <SelectItem value="09">September</SelectItem>
+                      <SelectItem value="10">October</SelectItem>
+                      <SelectItem value="11">November</SelectItem>
+                      <SelectItem value="12">December</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
               <Calendar
                 initialFocus
                 mode="range"
@@ -234,6 +401,14 @@ const CaseFilters: React.FC<CaseFiltersProps> = ({
               />
             </PopoverContent>
           </Popover>
+
+          <Button variant="outline" className="flex items-center gap-2">
+            <div className="flex items-center">
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              <ChevronRight className="h-4 w-4" />
+            </div>
+            <span>Date Selector</span>
+          </Button>
         </div>
 
         {/* Active filters */}
