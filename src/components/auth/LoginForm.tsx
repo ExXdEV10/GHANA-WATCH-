@@ -73,10 +73,15 @@ const LoginForm = ({
     <div>
       <CardHeader className="space-y-1 px-0 pt-0">
         <div className="flex justify-center mb-4">
-          <Shield className="h-12 w-12 text-primary" />
+          <img
+            src="/ghana-road-watch-logo.svg"
+            alt="Ghana Road Watch Logo"
+            className="h-24 w-24"
+            style={{ objectFit: "contain" }}
+          />
         </div>
         <CardTitle className="text-2xl font-bold text-center">
-          Road Safety Monitoring
+          Ghana Road Watch App
         </CardTitle>
         <CardDescription className="text-center">
           Government Stakeholder Portal Login
