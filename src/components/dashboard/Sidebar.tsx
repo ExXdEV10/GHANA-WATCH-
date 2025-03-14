@@ -51,7 +51,7 @@ const Sidebar = ({
   const navItems = [
     {
       name: "Dashboard",
-      path: "/",
+      path: "/dashboard",
       icon: <Home className="h-5 w-5" />,
     },
     {

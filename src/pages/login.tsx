@@ -18,7 +18,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
   useEffect(() => {
     // If user is already authenticated, redirect to dashboard
     if (isAuthenticated) {
-      navigate("/");
+      navigate("/dashboard");
     }
   }, [isAuthenticated, navigate]);
 
@@ -33,7 +33,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
     try {
       const success = await login(values.username, values.password);
       if (success) {
-        navigate("/");
+        navigate("/dashboard");
       } else {
         setError("Invalid credentials. Please try again.");
         setIsLoading(false);

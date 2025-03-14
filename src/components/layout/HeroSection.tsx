@@ -8,7 +8,7 @@ const HeroSection = () => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src="https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/user-uploads/1718826825-ghana-road-safety-officer.jpg"
+          src="https://citinewsroom.com/wp-content/uploads/2023/08/IMG-20230807-WA0097.jpg"
           alt="Road safety officer with flag"
           className="h-full w-full object-cover"
         />

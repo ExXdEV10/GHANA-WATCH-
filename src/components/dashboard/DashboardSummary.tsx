@@ -246,12 +246,6 @@ const DashboardSummary = ({
 
       {/* Recent Incidents */}
       <div className="bg-white rounded-xl shadow overflow-hidden mb-8">
-        <div className="p-6 border-b border-gray-100">
-          <h2 className="text-lg font-semibold">Recent Incidents</h2>
-          <p className="text-sm text-gray-500">
-            Latest reported incidents across all channels
-          </p>
-        </div>
         <div className="divide-y divide-gray-100">
           {recentIncidents.map((incident, index) => (
             <IncidentItem
