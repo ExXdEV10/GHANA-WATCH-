@@ -11,15 +11,25 @@ import IncidentSubmissionPage from "./pages/incident-submission";
 import ProfilePage from "./pages/profile";
 import SettingsPage from "./pages/settings";
 import ProtectedRoute from "./components/ProtectedRoute";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <>
         <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<HomePage />} />
+          <Route path="/how-it-works" element={<HomePage />} />
+          <Route path="/announcements" element={<HomePage />} />
+
+          {/* Auth routes */}
           <Route path="/login" element={<LoginPage />} />
+
+          {/* Protected routes */}
           <Route
-            path="/"
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <Home />
@@ -83,14 +93,7 @@ function App() {
             }
           />
           {/* Add a catch-all route that redirects to home */}
-          <Route
-            path="*"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="*" element={<HomePage />} />
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       </>
